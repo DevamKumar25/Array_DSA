@@ -1,0 +1,58 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+// Time complexity = O(N^2);
+// space complexity = O(1);
+
+
+// Brute-force approach;
+
+
+int stockBuySell(int arr[], int start, int end) {
+    if (end <= start) 
+        return 0;
+    
+    int maxProfit = 0;
+    for (int i = start; i <= end; i++) {
+        for (int j = i + 1; j <= end; j++) {
+            if (arr[j] > arr[i]) {
+                int curr_Profit = arr[j] - arr[i] + 
+                                  stockBuySell(arr, start, i - 1) + 
+                                  stockBuySell(arr, j + 1, end);
+                
+                maxProfit = max(maxProfit, curr_Profit);
+            }
+        }
+    }
+    return maxProfit;
+}
+
+
+
+// Efficient Approch
+// Time complexity  = O(N)
+// sapce complexity = O(1)
+
+
+int stockBuySell(int arr[], int n) {
+    int minPrice = INT_MAX;  // MIN VALUE AT LARGE PRICES
+    int maxProfit = 0;       
+
+    // Iterate over the prices
+    for (int i = 1; i < n; i++) {
+        if (arr[i] > arr[i - 1]) {
+            maxProfit += (arr[i] - arr[i - 1]); 
+        }
+    }
+    
+    return maxProfit;  // Return the total profit from all the transactions
+}
+
+
+int main() {
+    int n = 5;
+    int arr[n] = {1, 5, 3, 8, 12};
+    int maxProfit = stockBuySell(arr, 0, n - 1);
+    cout << "Maximum Profit: " << maxProfit << endl;
+    return 0;
+}
